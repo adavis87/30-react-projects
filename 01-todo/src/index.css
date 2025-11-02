@@ -3,7 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+
   color: rgba(255, 255, 255, 0.87);
   background-color: beige;
 
@@ -12,32 +12,41 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+form {
+  margin: 0 auto;
+}
+button {
+  padding: 1em;
+}
+label {
+  color: black;
+  font-size: 1em;
+}
 
 header {
   color: black;
   text-align: center;
 }
-
+.todo-container {
+  display: grid;
+  grid-template-rows: repeat(1, 1fr);
+}
 .todo-title {
   color: black;
   font-size: 1.2em;
   font-weight: bold;
 }
 
-.todo-container {
-  display: grid;
-}
-
 .todo-parent {
-  display: flex;
-  align-items: center;
-  border: 1px solid black;
-  padding: 10px;
-  justify-content: space-around;
+display: flex;
+  justify-content: space-between; /* Pushes text left and button-group right */
+  align-items: center; /* Keeps everything vertically centered */
+  padding: 1rem;
+  border-bottom: 1px solid black;
 }
 
-.btn-delete,
-.btn-edit {
-  padding: 10px;
-  width: 20%;
+.button-group {
+  display: flex;
+  gap: 1em;
+  justify-content: flex-start;
 }

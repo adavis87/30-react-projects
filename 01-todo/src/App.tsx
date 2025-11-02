@@ -1,29 +1,40 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 const tasks = ["Learn React", "Build a Todo App", "Master JavaScript"];
 
+function TodoForm() {
+  return (
+    <form>
+      <label htmlFor="taskName">Task Name</label>
+      <div>
+        <input type="text" className="text" />
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+  );
+}
+
 function Todo({ title }: { title: string }) {
   return (
     <div className="todo-parent">
-      <p className="todo-title">{title}</p>
-      <button className="btn-delete">delete</button>
-      <button className="btn-edit">edit</button>
+      <span className="todo-title">{title}</span>
+
+      <div className="button-group">
+        <button className="btn-delete">delete</button>
+        <button className="btn-edit">edit</button>
+      </div>
     </div>
   );
 }
 
 function TaskList() {
   const todos = tasks.map((task) => (
-    <Todo title={task} />
-  ))
-  return (
-    <ul>
-      <li>{todos}</li>
-    </ul>
-  );
+    <li>
+      <Todo title={task} />
+    </li>
+  ));
+  return <ul>{todos}</ul>;
 }
 
 function App() {
@@ -33,6 +44,7 @@ function App() {
         <h1>What is there todo?</h1>
       </header>
       <section className="todo-container">
+        <TodoForm />
         <TaskList />
       </section>
     </>
