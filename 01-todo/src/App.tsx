@@ -2,28 +2,47 @@ import { useState, useEffect } from "react";
 import type { FormEvent, ChangeEvent } from "react";
 import "./App.css";
 
-function App() {
-  const [todos, setTodos] = useState<string[]>(() => {
-    const saved = localStorage.getItem("todos");
-    return saved
-      ? JSON.parse(saved)
-      : ["Learn React", "Finish This Todo App", "Interview Prep"];
-  });
-  const [value, setValue] = useState("");
+function getLocalStorage() {
+  const list = localStorage.getItem("todos");
+  if (list) {
+    return JSON.parse(list);
+  }
+  return [];
+}
 
+function App() {
+  const [todos, setTodos] = useState(getLocalStorage());
+  const [value, setValue] = useState("");
+  const [isEditing, toggleIsEditing] = useState(false);
+  const [editId, setEditId] = useState("");
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    // event.preventDefault();
+    // if (value.trim() === "") return;
+    // setTodos([...todos, value]);
+    // setValue("");
+    // localStorage.setItem("todos", JSON.stringify(todos));
     event.preventDefault();
-    if (value.trim() === "") return;
+    if (!value) return;
+    else if (value && isEditing) {
+      console.log("in editing mode!");
+    }
     setTodos([...todos, value]);
-    setValue("");
-    localStorage.setItem("todos", JSON.stringify(todos));
+    toggleIsEditing(false);
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 
+  // edit
+  const handleEdit = (editTarget: string) => {
+    toggleIsEditing(true);
+    setEditId(editTarget);
+  };
+
   const handleDelete = (name: string) => {
+    // clear input first
+    setValue("");
     return setTodos(todos.filter((todo) => name !== todo));
   };
   useEffect(() => {
@@ -40,8 +59,13 @@ function App() {
           handleInputChange={handleInputChange}
           value={value}
         />
-        <TaskList todos={todos} handleDelete={handleDelete} />
+        <TaskList
+          todos={todos}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+        />
       </section>
+            {JSON.stringify(isEditing, 2, null)}
     </>
   );
 }
@@ -74,26 +98,32 @@ function TodoForm({
 function TaskList({
   todos,
   handleDelete,
+  handleEdit,
 }: {
   todos: string[];
   handleDelete: (name: string) => void;
+  handleEdit: (name: string) => void;
 }) {
   const items = todos.map((task, idx) => (
     <li key={idx}>
-      <Todo title={task} handleDelete={() => handleDelete(task)} />
+      <Todo
+        title={task}
+        handleDelete={() => handleDelete(task)}
+        handleEdit={() => handleEdit(task)}
+      />
     </li>
   ));
   return <ul>{items}</ul>;
 }
 
-
-
 function Todo({
   title,
   handleDelete,
+  handleEdit,
 }: {
   title: string;
   handleDelete: () => void;
+  handleEdit: () => void;
 }) {
   return (
     <div className="todo-parent">
@@ -103,8 +133,11 @@ function Todo({
         <button className="btn-delete" onClick={handleDelete}>
           delete
         </button>
-        <button className="btn-edit">edit</button>
+        <button className="btn-edit" onClick={handleEdit}>
+          edit
+        </button>
       </div>
+
     </div>
   );
 }
