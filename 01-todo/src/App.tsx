@@ -14,20 +14,32 @@ function App() {
   const [todos, setTodos] = useState(getLocalStorage());
   const [value, setValue] = useState("");
   const [isEditing, toggleIsEditing] = useState(false);
-  const [editId, setEditId] = useState("");
+  const [editId, setEditId] = useState<string | null>(null);
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    // event.preventDefault();
-    // if (value.trim() === "") return;
-    // setTodos([...todos, value]);
-    // setValue("");
-    // localStorage.setItem("todos", JSON.stringify(todos));
     event.preventDefault();
-    if (!value) return;
-    else if (value && isEditing) {
-      console.log("in editing mode!");
+    if (!value) {
+      // stop if input is empty
+      return;
     }
-    setTodos([...todos, value]);
-    toggleIsEditing(false);
+    // condition for editing existing task
+    else if (value && isEditing) {
+      console.log("in editing mode");
+      setTodos(
+        todos.map((item) => {
+          if (item === editId) {
+            item = value;
+            return item;
+          }
+          return item;
+        })
+      );
+      setValue("");
+      setEditId(null);
+      toggleIsEditing(false);
+    } else {
+      setTodos([...todos, value]);
+      setValue("");
+    }
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -36,14 +48,16 @@ function App() {
 
   // edit
   const handleEdit = (editTarget: string) => {
+    const editId = todos.find((todo: string) => todo === editTarget);
     toggleIsEditing(true);
-    setEditId(editTarget);
+    setEditId(editId);
+    setValue(editId);
   };
 
   const handleDelete = (name: string) => {
     // clear input first
     setValue("");
-    return setTodos(todos.filter((todo) => name !== todo));
+    setTodos(todos.filter((todo) => name !== todo));
   };
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -58,6 +72,7 @@ function App() {
           handleSubmit={handleSubmit}
           handleInputChange={handleInputChange}
           value={value}
+          isEditing={isEditing}
         />
         <TaskList
           todos={todos}
@@ -65,7 +80,7 @@ function App() {
           handleEdit={handleEdit}
         />
       </section>
-            {JSON.stringify(isEditing, 2, null)}
+      <p style={{ color: "black" }}>{JSON.stringify(isEditing, null, 2)}</p>
     </>
   );
 }
@@ -73,10 +88,12 @@ function TodoForm({
   handleSubmit,
   handleInputChange,
   value,
+  isEditing,
 }: {
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
   handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   value: string;
+  isEditing: boolean;
 }) {
   return (
     <form onSubmit={handleSubmit}>
@@ -89,7 +106,7 @@ function TodoForm({
           value={value}
           onChange={handleInputChange}
         />
-        <input type="submit" value="Submit" />
+        <input type="submit" value={isEditing ? "update" : "submit"} />
       </div>
     </form>
   );
@@ -137,7 +154,6 @@ function Todo({
           edit
         </button>
       </div>
-
     </div>
   );
 }
