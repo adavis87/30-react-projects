@@ -1,16 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [date, setDate] = useState(Date.now());
-  const frameDelay = 1000;
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      console.log(date);
-    }, frameDelay);
-    return () => clearInterval(intervalId);
-  });
-  return <>Hours:Minutes:Seconds {date}</>;
+  let time = new Date().toLocaleTimeString();
+  const [localTime, setTime] = useState(time);
+  const updateTime = () => {
+    time = new Date().toLocaleTimeString();
+    setTime(time);
+  };
+  setInterval(updateTime);
+  return (
+    <div className="container">
+    <h1>
+      The current time is: <br /> {localTime}
+    </h1>
+    <h2>{new Date().toDateString()}</h2>
+    </div>
+  );
 }
 
 export default App;
