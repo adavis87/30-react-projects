@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import LocaleInput from "./components/LocaleInput";
 
 function App() {
-
   return (
     <section className="container">
-    <p>blank</p>
+      <LocaleInput />
     </section>
-  )
+  );
 }
 
-export default App
+export default App;
