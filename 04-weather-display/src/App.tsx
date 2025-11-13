@@ -1,10 +1,18 @@
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 import "./App.css";
 import LocaleInput from "./components/LocaleInput";
+import Forecast from "./components/Forecast";
+import { apiTest } from "./lib/api";
 
 function App() {
+  const weather_data = apiTest();
+  console.log(weather_data)
   const [query, setQuery] = useState("");
-  const [weather, setWeather] = useState({
+  const [weather, setWeather] = useState<{
+    data: any;
+    isLoading: boolean;
+    error: boolean;
+  }>({
     data: [],
     isLoading: false,
     error: false,
@@ -24,7 +32,8 @@ function App() {
       <LocaleInputAny handleInputChange={handleQueryChange} />
       <pre
         style={{ textAlign: "center" }}
-      >{JSON.stringify(query, null, 2)}</pre>
+      >{JSON.stringify(weather, null, 2)}</pre>
+      <Forecast />
     </section>
   );
 }

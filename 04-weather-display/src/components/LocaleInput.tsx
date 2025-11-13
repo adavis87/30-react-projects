@@ -1,12 +1,16 @@
-import React from "react";
+import type { ChangeEvent } from "react";
 
-function LocaleInput({ handleInputChange }) {
+type Props = {
+    handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
+};
+
+function LocaleInput({ handleInputChange }: Props) {
     return (
         <div className="form">
             <label htmlFor="location">location</label>
             <input
                 type="text"
-                onChange={handleInputChange}
+                onChange={(e) => handleInputChange(e)}
                 placeholder="los angeles"
                 name="location"
                 id="location"

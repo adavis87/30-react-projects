@@ -16,6 +16,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@react-icons/all-files": "^4.1.0",
     "dotenv": "^17.2.3",
+    "openmeteo": "^1.2.2",
     "react": "^19.1.1",
     "react-animated-icons": "^1.0.0",
     "react-animated-weather": "^4.0.1",
