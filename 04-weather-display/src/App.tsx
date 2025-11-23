@@ -15,11 +15,19 @@ function App() {
   });
 
   useEffect(() => {
-    const fetchWeatherData = async () => {
-      const API_URL = import.meta.env.VITE_API_KEY;
-      console.log(API_URL);
-    };
-    fetchWeatherData();
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const API_URL =
+      `https://api.openweathermap.org/data/3.0/onecall?lat=40.09&lon=-75.12&exclude=hourly&appid=${import.meta.env.VITE_API_KEY}`;
+      fetch(API_URL, { signal }).then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error: ${API_URL}`);
+      }
+      return res.json().then((data) =>
+        setWeather({ data, isLoading: false, error: false })
+      );
+    });
+    return () => controller.abort();
   }, []);
 
   const handleQueryChange = (
@@ -35,7 +43,7 @@ function App() {
       <LocaleInputAny handleInputChange={handleQueryChange} />
       <pre
         style={{ textAlign: "center", fontSize: "10pt" }}
-      >{JSON.stringify(weather, null, 2)}</pre>
+      >{JSON.stringify({weather, query}, null, 2)}</pre>
       <Forecast />
     </section>
   );
