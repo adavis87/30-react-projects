@@ -1,31 +1,6 @@
-const monthsAndDays = () => {
-    const months: string[] = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
-    const days: string[] = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-    ];
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-    const current = new Date();
-
-    return current;
-};
-
-export default monthsAndDays;
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}

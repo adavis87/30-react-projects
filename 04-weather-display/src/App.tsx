@@ -1,7 +1,6 @@
 import { type ChangeEvent, useEffect, useState } from "react";
-import "./App.css";
+import { Button } from "./components/ui/button";
 import LocaleInput from "./components/LocaleInput";
-import Forecast from "./components/Forecast";
 function App() {
   const [query, setQuery] = useState("");
   const [weather, setWeather] = useState<{
@@ -19,7 +18,7 @@ function App() {
     const signal = controller.signal;
     const API_URL =
       `https://api.openweathermap.org/data/3.0/onecall?lat=40.09&lon=-75.12&exclude=hourly&appid=${import.meta.env.VITE_API_KEY}`;
-      fetch(API_URL, { signal }).then((res) => {
+    fetch(API_URL, { signal }).then((res) => {
       if (!res.ok) {
         throw new Error(`Error: ${API_URL}`);
       }
@@ -40,11 +39,9 @@ function App() {
 
   return (
     <section className="container">
-      <LocaleInputAny handleInputChange={handleQueryChange} />
-      <pre
-        style={{ textAlign: "center", fontSize: "10pt" }}
-      >{JSON.stringify({weather, query}, null, 2)}</pre>
-      <Forecast />
+      <div className="flex min-h-svh flex-col items-center justify-center">
+        <Button variant="destructive" size="lg">Click me</Button>
+      </div>
     </section>
   );
 }
