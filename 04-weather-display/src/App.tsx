@@ -1,6 +1,8 @@
 import { type ChangeEvent, useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
+
 import LocaleInput from "./components/LocaleInput";
+import { CardDemo } from "./components/CardDemo";
 function App() {
   const [query, setQuery] = useState("");
   const [weather, setWeather] = useState<{
@@ -38,11 +40,17 @@ function App() {
   const LocaleInputAny = LocaleInput as any;
 
   return (
-    <section className="container">
-      <div className="flex min-h-svh flex-col items-center justify-center">
-        <Button variant="destructive" size="lg">Click me</Button>
-      </div>
-    </section>
+    <>
+      <section className="border-solid border-4 border-indigo-500">
+        <h1 className="text-2xl pt-2">Weather App</h1>
+        <div className="flex justify-between">
+          <CardDemo />
+          <CardDemo />
+          <CardDemo />
+          <CardDemo />
+        </div>
+      </section>
+    </>
   );
 }
 
